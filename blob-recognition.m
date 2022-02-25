@@ -9,20 +9,15 @@ matrix2 = zeros(100,7);
 
 for j = 1 : 100
 	
-	% OPTION 2: Create an image filename, and read it in to a variable called imageData.
+	% Input files in a loop having name as a series of integers.
 	pngFileName = strcat( num2str(j), '.png');
 	if isfile(pngFileName)
-		
 	
-
-originalImage = imread(pngFileName);
-[rows, columns, numberOfColorChannels] = size(originalImage);
+	originalImage = imread(pngFileName);
+	[rows, columns, numberOfColorChannels] = size(originalImage);
 	originalImage = rgb2gray(originalImage);
 
-% axis image; % Make sure image is not artificially stretched because of screen's aspect ratio.
-
-% grid on;
-
+% giving threshold to differentiate the color background
 thresholdValue = 100;
 binaryImage = originalImage > thresholdValue; % Bright objects will be chosen if you use >.
 % ========== IMPORTANT OPTION ============================================================
@@ -34,7 +29,7 @@ binaryImage = imfill(binaryImage, 'holes');
 labeledImage = bwlabel(binaryImage, 8);     % Label each blob so we can make measurements of it
 
 coloredLabels = label2rgb (labeledImage, 'hsv', 'k', 'shuffle'); % pseudo random color labels
-% coloredLabels is an RGB image.  We could have applied a colormap instead (but only with R2014b and later)
+% coloredLabels is an RGB image.
 
 blobMeasurements = regionprops(labeledImage, originalImage, 'all');
 numberOfBlobs = size(blobMeasurements, 1);
@@ -43,7 +38,7 @@ boundaries = bwboundaries(binaryImage);
 numberOfBoundaries = size(boundaries, 1);
 for k = 1 : numberOfBoundaries
 	thisBoundary = boundaries{k};
-% 	plot(thisBoundary(:,2), thisBoundary(:,1), 'g', 'LineWidth', 2);
+
 end
 
 blobECD = zeros(1, numberOfBlobs);
